@@ -22,3 +22,13 @@
   cursor: pointer;
   border: 0.175rem solid #e8e8e8;
 }
+
+#login-button {
+  color: #ffffff;
+  padding: 0.35em 0.7em;
+  font-size: 1rem;
+  border-radius: 0.35em;
+  background: #917cb7;
+  cursor: pointer;
+  border: 0.175rem solid #e8e8e8;
+}
