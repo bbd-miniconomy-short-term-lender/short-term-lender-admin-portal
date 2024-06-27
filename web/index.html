@@ -1,55 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Broke.com</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-X11T7cggHHRqF2y2TCWuS09OxPASdnozUYzcb5bFzRMH2S+0KiIVs8a3j5C1m3zNueLheI6znv0//tP/0l3M5A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="css/styles.css">
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="css/styles.css" />
+    <title>Loanify Admin Portal</title>
+
+    <script type="module" src="js/index.js" defer></script>
+  </head>
+  <body>
     <header>
-        <nav>
-            <ul>
-                <li><a href="#" onclick="navigateTo('home')">Home</a></li>
-                <li><a href="#" onclick="navigateTo('about')">About</a></li>
-                <li><a href="#" onclick="navigateTo('contact')">Contact</a></li>
-            </ul>
-        </nav>
+      <section id="titleHeader">
+        <img id="logoHeader" src="assets/favicon.png" alt="" />
+        <h2>Loanify: Admin Portal</h2>
+      </section>
+      <section id="userOptionsHeader">
+        <button id="logoutButtonHeader">Logout</button>
+        <p id="userNameHeader">user</p>
+      </section>
     </header>
-    <main id="content">
-        <!-- Content will be loaded dynamically here -->
-        <section id="home">
-            <h2>ARE YOU BROKE?</h2>
-            <p>We got you covered. Click the button below</p>
-            <a href="#" class="btn request-loan-btn" onclick="toggleLoanProcess()">Request Loan</a>
-            <div id="loanProcess" class="loan-process">
-                <h3>Enter Loan Amount (Rands)</h3>
-                <input type="number" id="loanAmount" value="0" step="100" min="0">
-                <button onclick="submitLoanRequest()">Next</button>
-            </div>
-        </section>
-
-        <section id="about">
-            <h2>About Us</h2>
-            <p>We do not have Hitman. Do not make us hire one. Please Pay on Time</p>
-        </section>
-        <section id="contact">
-            <h2>Contact Us</h2>
-            <ul>
-                <li>
-                    <i class="fas fa-envelope"></i> Email: <a href="mailto:shortTermLender@WeWillFindYou.com"> shortTermLender@WeWillFindYou.com</a>
-                </li>
-                <li>
-                    <i class="fas fa-phone"></i> Phone Number: <a href="tel:+0724823234">072 482 3234</a>
-                </li>
-                <li>
-                    <i class="fab fa-whatsapp"></i> Whatsapp: <a href="https://wa.me/27324351234">032 435 1234</a>
-                </li>
-            </ul>
-        </section>
+    <main id="contentContainer">
+      <section id="dashboardContainer"></section>
     </main>
-
-    <script src="js/index.js"></script>
-</body>
+  </body>
 </html>

@@ -1,165 +1,64 @@
-/* Resetting and basic styling */
-body {
+:root {
+  /* -clr-lt Light Colour Theme */
+  --shadow-clr-lt: #6b6b6b;
+  --highlight-clr-lt: #d4d4d4;
+  --background-clr-lt: #f8f8f8;
+  --header-background-clr-lt: #637ffa;
+}
+
+* {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
 }
 
-header {
-  background-color: #333;
-  color: #fff;
-  padding: 10px;
-  text-align: center;
-}
-
-nav ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-nav ul li {
-  display: inline;
-  margin-right: 10px;
-}
-
-nav ul li a {
-  color: #fff;
-  text-decoration: none;
-}
-
-nav ul li a:hover {
-  text-decoration: underline;
-  cursor: pointer;
-}
-
-main {
-  padding: 20px;
-}
-
-#home {
-  display: block;
-}
-
-#about, #contact {
-  display: none;
-}
-
-/* Button styling */
-.request-loan-btn {
-  display: inline-block;
-  padding: 10px 20px;
-  background-color: #4CAF50;
-  color: #fff;
-  text-decoration: none;
-  border-radius: 10px;
-  transition: background-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-.request-loan-btn:hover {
-  background-color: #45a049;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-}
-
-
-/* Add styles for list items with icons */
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-ul li {
-  margin-bottom: 10px;
+body {
   display: flex;
+  flex-direction: column;
   align-items: center;
+  height: 100vh;
+  width: 100vw;
+  gap: 1rem;
+  background-color: var(--background-clr-lt);
 }
 
-ul li i {
-  margin-right: 10px;
+header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  background-color: var(--header-background-clr-lt);
+  width: 100%;
+  height: 5rem;
 }
 
-/* Style for loan input */
-.loan-input {
-  display: none; /* Hidden by default */
-  margin-top: 20px;
-  border: 1px solid #ccc;
-  padding: 10px;
-  border-radius: 5px;
-  background-color: #f9f9f9;
-  width: 20%
+#titleHeader {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 1rem;
+  gap: 1rem;
 }
 
-.loan-input h3 {
-  margin-top: 0;
-  font-size: 18px;
-  color: #333;
+#userOptionsHeader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 1rem;
+  gap: 0.1rem;
 }
 
-.loan-input input[type="number"] {
-  width: 90%;
-  padding: 10px;
-  margin: 10px 0;
+#logoHeader {
+  height: 80%;
 }
 
-.loan-input button {
-  background-color: #4CAF50;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  margin: 5px;
-  cursor: pointer;
-  border-radius: 10px;
-  transition: background-color 0.3s ease;
-}
-
-.loan-input button:hover {
-  background-color: #45a049;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-}
-
-/* Style for loan process */
-.loan-process {
-  display: none; /* Hidden by default */
-  margin-top: 20px;
-  border: 1px solid #ccc;
-  padding: 10px;
-  border-radius: 10px;
-  background-color: #f9f9f9;
-  width: 20%
-}
-
-.loan-process h3 {
-  margin-top: 0;
-  font-size: 18px;
-  color: #333;
-}
-
-.loan-process input[type="number"] {
-  width: 90%;
-  padding: 10px;
-  margin: 10px 0;
-  border-radius: 10px;
-}
-
-.loan-process button {
-  background-color: #4CAF50;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  margin: 5px;
-  cursor: pointer;
-  border-radius: 10px;
-  transition: background-color 0.3s ease;
-}
-
-.loan-process button:hover {
-  background-color: #45a049;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+#logoutButtonHeader {
+  border-radius: 50%;
+  width: 3rem;
+  height: 3rem;
 }
