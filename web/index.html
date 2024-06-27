@@ -20,7 +20,33 @@
       </section>
     </header>
     <main id="contentContainer">
-      <section id="dashboardContainer"></section>
+      <section id="dashboardContainer">
+        <h1>Admin Dashboard</h1>
+        <div class="pannels">
+          <div class="interest-rate-metric" data-percent="12">
+            <p class="pannelDescription">Current Lending Rate</p>
+          </div>
+          <div class="radial-dial">
+            <div class="dial" id="dial" data-percent="34"></div>
+            <p class="pannelDescription">Repayment Progress</p>
+          </div>
+        </div>
+        <div id="dashTable">
+          <table id="loanTableBody">
+            <thead>
+              <tr>
+                <th>Client ID</th>
+                <th>Client Name</th>
+                <th>Loan Amount</th>
+                <th>Interest Rate</th>
+                <th>Loan Term</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
     </main>
   </body>
 </html>

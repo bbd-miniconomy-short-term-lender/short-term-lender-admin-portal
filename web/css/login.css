@@ -2,7 +2,7 @@
   /* -clr-lt Light Colour Theme */
   --shadow-clr-lt: #6b6b6b;
   --highlight-clr-lt: #d4d4d4;
-  --background-clr-lt: #7c7777;
+  --background-clr-lt: #220042;
   --header-background-clr-lt: #637ffa;
 }
 
@@ -26,11 +26,11 @@ body {
 #loginContainer {
   display: flex;
   flex-direction: column;
-  background-color: rgb(90, 106, 119);
   border-radius: 3%;
+  gap: 3rem;
 }
 
 img {
-  height: 10rem;
-  width: 10rem;
+  height: 15rem;
+  width: 15rem;
 }

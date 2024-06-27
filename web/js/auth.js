@@ -24,4 +24,30 @@ const clearSessionAndLogout = () => {
     window.location.href = LOGIN_PATH;
 }
 
-export { validateSession, clearSessionAndLogout }
+function parseJwt(token) {
+    try {
+        return JSON.parse(atob(token.split('.')[1]));
+    } catch (e) {
+        return null;
+    }
+}
+
+function validateToken(token) {
+    try {
+        if (!token) {
+            clearSessionAndLogout();
+        } else {
+            const decodedToken = parseJwt(token);
+            const expirationTime = decodedToken.exp;
+            const currentTime = Math.floor(Date.now() / 1000);
+
+            if (currentTime >= expirationTime) {
+                clearSessionAndLogout();
+            }
+        }
+    } catch {
+        clearSessionAndLogout();
+    }
+}
+
+export { validateSession, clearSessionAndLogout, parseJwt, validateToken }

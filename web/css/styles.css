@@ -3,7 +3,9 @@
   --shadow-clr-lt: #6b6b6b;
   --highlight-clr-lt: #d4d4d4;
   --background-clr-lt: #f8f8f8;
-  --header-background-clr-lt: #637ffa;
+  --header-background-clr-lt: #7eaf83;
+  --text-clr-lt: #1b573a;
+  --metric-clr-lt: #4b9b58;
 }
 
 * {
@@ -20,6 +22,7 @@ body {
   width: 100vw;
   gap: 1rem;
   background-color: var(--background-clr-lt);
+  color: var(--text-clr-lt);
 }
 
 header {
@@ -30,7 +33,7 @@ header {
   margin-bottom: 1rem;
   background-color: var(--header-background-clr-lt);
   width: 100%;
-  height: 5rem;
+  height: 7rem;
 }
 
 #titleHeader {
@@ -54,11 +57,128 @@ header {
 }
 
 #logoHeader {
-  height: 80%;
+  height: 70%;
+  aspect-ratio: 1;
 }
 
 #logoutButtonHeader {
   border-radius: 50%;
   width: 3rem;
   height: 3rem;
+}
+
+#contentContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: start;
+  width: 90%;
+  height: 100%;
+}
+
+#dashboardContainer {
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 0 1rem rgba(0, 0, 0, 0.1);
+  width: 100%;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+}
+
+thead {
+  position: sticky;
+  top: 0;
+  background-color: #f2f2f2;
+  z-index: 1;
+}
+
+#dashTable {
+  max-height: 40vh; /* Adjust this value as needed */
+  overflow-y: auto; /* Enables vertical scrolling */
+}
+
+table,
+th,
+td {
+  border: 0.1rem solid #ddd;
+}
+
+th,
+td {
+  padding: 1rem;
+  text-align: left;
+}
+
+th {
+  background-color: #f2f2f2;
+}
+
+tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.radial-dial {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 2rem 0;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.dial {
+  width: 9rem;
+  height: 9rem;
+  background: conic-gradient(var(--metric-clr-lt) var(--percent), #ddd 0);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.dial::after {
+  content: attr(data-percent) "%";
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 7rem;
+  height: 7rem;
+  background: #fff;
+  border-radius: 50%;
+  font-size: 1.5em;
+  font-weight: bold;
+  color: var(--metric-clr-lt);
+}
+
+.interest-rate-metric::before {
+  content: attr(data-percent) "%";
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 5em;
+  font-weight: bold;
+  color: var(--metric-clr-lt);
+}
+
+.pannels {
+  display: flex;
+  flex-direction: row;
+  align-content: flex-start;
+  justify-content: space-evenly;
+  height: 100%;
+  width: 100%;
+  gap: 1rem;
+  align-items: center;
+}
+
+.pannelDescription {
+  font-weight: bold;
 }
