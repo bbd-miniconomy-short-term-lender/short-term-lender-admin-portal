@@ -51,45 +51,33 @@ const loadTable = () => {
     const thing = [
         {
             clientId: '1',
-            clientName: 'x',
             loanAmount: 'x',
-            interestRate: 'x',
-            loanTerm: 'x',
             status: 'x',
         },
         {
             clientId: '2',
-            clientName: 'x',
             loanAmount: 'x',
-            interestRate: 'x',
-            loanTerm: 'x',
             status: 'x',
         },
         {
             clientId: '3',
-            clientName: 'x',
             loanAmount: 'x',
-            interestRate: 'x',
-            loanTerm: 'x',
             status: 'x',
         },
     ];
 
     thing.forEach((tin) => {
-        addNewRow(tin.clientId, tin.clientName, tin.loanAmount, tin.interestRate, tin.loanTerm, tin.status);
+        addNewRow(tin.clientId, tin.loanAmount, tin.status);
     });
 }
 
-const addNewRow = (clientId, clientName, loanAmount, interestRate, loanTerm, status) => {
+const addNewRow = (personaId, loanAmount, status) => {
     const tableBody = document.getElementById('loanTableBody');
     const newRow = document.createElement('tr');
 
     newRow.innerHTML = `
-        <td>${clientId}</td>
-        <td>${clientName}</td>
+        <td>${personaId}</td>
         <td>${loanAmount}</td>
-        <td>${interestRate}</td>
-        <td>${loanTerm}</td>
         <td>${status}</td>
     `;
 
@@ -108,8 +96,9 @@ const handleTableDrillDown = async () => {
     }
 
     if (target) {
-        const clientId = target.cells[0].textContent;
-        alert('Client ID: ' + clientId);
+        const personaId = target.cells[0].textContent;
+        alert('Clicked Persona ID: ' + personaId);
+        // here we will drill into this persona record @Rotenda
     }
 }
 
