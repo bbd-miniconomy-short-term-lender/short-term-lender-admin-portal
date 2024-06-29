@@ -17,7 +17,7 @@ jobs:
     env:
       web_directory: ./web
       web_bucket_name: short-term-lender-web-bucket
-      web_config_param: stl-web-config
+      web_config_param: /stl/config
 
     steps:
       - name: Checkout code
@@ -30,10 +30,10 @@ jobs:
           role-session-name: federatedOIDC-GH-AWS
           aws-region: ${{secrets.AWS_SECRET_REGION}}
 
-      # - name: Inject config file
-      #   working-directory: ${{ env.web_directory }}
-      #   run: |
-      #     aws ssm get-parameter --name "${{ env.web_config_param }}" --with-decryption --query 'Parameter.Value' --region ${{secrets.AWS_SECRET_REGION}} --output text > ./js/config.js
+      - name: Inject config file
+        working-directory: ${{ env.web_directory }}
+        run: |
+          aws ssm get-parameter --name "${{ env.web_config_param }}" --with-decryption --query 'Parameter.Value' --region ${{secrets.AWS_SECRET_REGION}} --output text > ./js/config.js
 
       - name: Deploy Fronted Files
         working-directory: ${{ env.web_directory }}
