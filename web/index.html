@@ -1,55 +1,126 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Broke.com</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-X11T7cggHHRqF2y2TCWuS09OxPASdnozUYzcb5bFzRMH2S+0KiIVs8a3j5C1m3zNueLheI6znv0//tP/0l3M5A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="css/styles.css">
-</head>
-<body>
-    <header>
-        <nav>
-            <ul>
-                <li><a href="#" onclick="navigateTo('home')">Home</a></li>
-                <li><a href="#" onclick="navigateTo('about')">About</a></li>
-                <li><a href="#" onclick="navigateTo('contact')">Contact</a></li>
-            </ul>
-        </nav>
-    </header>
-    <main id="content">
-        <!-- Content will be loaded dynamically here -->
-        <section id="home">
-            <h2>ARE YOU BROKE?</h2>
-            <p>We got you covered. Click the button below</p>
-            <a href="#" class="btn request-loan-btn" onclick="toggleLoanProcess()">Request Loan</a>
-            <div id="loanProcess" class="loan-process">
-                <h3>Enter Loan Amount (Rands)</h3>
-                <input type="number" id="loanAmount" value="0" step="100" min="0">
-                <button onclick="submitLoanRequest()">Next</button>
-            </div>
-        </section>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Broke.com</title>
 
-        <section id="about">
-            <h2>About Us</h2>
-            <p>We do not have Hitman. Do not make us hire one. Please Pay on Time</p>
-        </section>
-        <section id="contact">
-            <h2>Contact Us</h2>
-            <ul>
-                <li>
-                    <i class="fas fa-envelope"></i> Email: <a href="mailto:shortTermLender@WeWillFindYou.com"> shortTermLender@WeWillFindYou.com</a>
-                </li>
-                <li>
-                    <i class="fas fa-phone"></i> Phone Number: <a href="tel:+0724823234">072 482 3234</a>
-                </li>
-                <li>
-                    <i class="fab fa-whatsapp"></i> Whatsapp: <a href="https://wa.me/27324351234">032 435 1234</a>
-                </li>
-            </ul>
-        </section>
-    </main>
+		<!-- Bootstrap - Latest compiled and minified CSS -->
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <link rel="stylesheet" href="css/styles.css">
+		<link rel="icon" type="image/png" href="images/favicon-16x16.png" sizes="16x16">  
+		<link rel="icon" type="image/png" href="images/favicon-32x32.png" sizes="32x32">  
+	</head>
 
-    <script src="js/index.js"></script>
-</body>
+	<body>
+
+<!-- 
+	Modal Dialog for adding a new User
+ -->
+		<div class="container">
+			<div class="modal fade" id="addUserModal" tabindex="-1" role="dialog" 
+				aria-labelledby="addUserModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<!-- Modal Header -->
+						<div class="modal-header">
+							<button type="button" class="close" 
+							data-dismiss="modal">
+							<span aria-hidden="true">&times;</span>
+							<span class="sr-only">Close</span>
+							</button>
+							<h4 class="modal-title" id="addUserModalLabel">
+								Add a new user to the User Pool
+							</h4>
+						</div>
+
+						<!-- Modal Body -->
+						<div class="modal-body">
+							<div role="form">
+								<div class="form-group" id="userNameDiv">
+									<label for="userName">User name</label>
+									<input type="text" class="form-control" id="userName" placeholder="Enter user name">
+								</div>
+								<div class="form-group" id="userEmailDiv">
+									<label for="userEmail">Email address</label>
+									<input type="email" class="form-control" id="userEmail" aria-describedby="emailHelp" placeholder="Enter email">
+								</div>
+								<div class="form-group" id="confirmationCode" hidden>
+									<label for="userConfirmationCode">Confirmation code</label>
+									<input type="text" class="form-control" id="userConfirmationCode" placeholder="Enter confirmation code">		  	
+								</div>
+								<div class="form-group" id="userPasswordDiv">
+ 									<label for="userPassword" id="passwordLabel">Password</label>
+ 									<input type="password" class="form-control" id="userPassword" placeholder="Enter password">
+									<input type="checkbox" class="form-check-input" id="showPasswordCheckbox" onclick="toggleShowPassword('showPasswordCheckbox', 'userPassword')">
+									<label class="form-check-label" for="showPasswordCheckbox">show</label>	
+								</div>
+								<div class="form-group" id="userNewPasswordDiv">
+ 									<label for="newUserPassword">New Password</label>
+ 									<input type="password" class="form-control" id="newUserPassword" placeholder="Enter password">
+									<input type="checkbox" class="form-check-input" id="showNewPasswordCheckbox" onclick="toggleShowPassword('showNewPasswordCheckbox', 'newUserPassword')">
+									<label class="form-check-label" for="showNewPasswordCheckbox">show</label>	
+								</div>
+							</div>
+						</div>
+
+						<!-- Modal Footer -->
+						<div class="modal-footer">
+							<button type="button" class="btn"
+								data-dismiss="modal">
+								Close
+							</button>
+							<button type="button" id="modalFormButton" class="btn" onclick="modalFormEnter()">
+								Sign Up
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+<!-- 
+	User Info
+ -->
+		<!-- User Info -->
+        <div class="center-screen">
+    <div class="container d-flex justify-content-center align-items-center h-100">
+        <div id="usersHeader">
+            <a href="#" class="btn" onclick="actionAddUser()">Sign Up</a>
+            <a href="#" class="btn" onclick="actionSignInUser()">Sign In</a>
+            <a href="#" class="btn" onclick="actionForgotPassword()">Forgot Password</a>
+            <a href="#" class="btn" onclick="actionChangePassword()">Change Password</a>
+            <a href="#" class="btn" onclick="actionSignOutUser()">Log Out</a>
+        </div>
+    </div>
+</div>
+
+
+
+		<!-- 
+			Alerts
+		-->
+		<div class="alert alert-danger" id="operationAlert" hidden>
+			<button type="button" class="close" onclick="closeAlertMessage()">&times;</button>
+			<span></span> 
+		</div>
+
+		<!-- Bootstrap's JavaScript dependencies -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+		
+		<!-- Cognito User Pool related code -->
+		<script type="text/javascript" src="js/amazon-cognito-identity.min.js"></script>
+		<script type="text/javascript" src="js/authentication.js"></script>
+		<script type="text/javascript" src="js/user-interface.js"></script>
+	</body>
 </html>
+
+
+
+<!-- Latest compiled and minified CSS -->
+
+
+<!-- Latest compiled and minified JavaScript -->
