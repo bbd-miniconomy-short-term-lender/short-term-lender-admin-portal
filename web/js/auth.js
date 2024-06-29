@@ -1,4 +1,4 @@
-import { LOGIN_PATH } from './config.js';
+import { LOGIN_URL } from './config.js';
 
 function validateSession() {
     const hashParams = new URLSearchParams(window.location.hash.substring(1));
@@ -21,7 +21,7 @@ function validateSession() {
 
 const clearSessionAndLogout = () => {
     sessionStorage.clear();
-    window.location.href = LOGIN_PATH;
+    window.location.href = LOGIN_URL;
 }
 
 function parseJwt(token) {
