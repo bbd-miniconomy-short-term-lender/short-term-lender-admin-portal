@@ -1,92 +1,174 @@
+import { validateSession, clearSessionAndLogout } from './auth.js';
+import { apiGetWithAuth } from './api.js';
 
-// Function to navigate between sections
-function navigateTo(sectionId) {
-    // Hide all sections
-    var sections = document.getElementsByTagName('section');
-    for (var i = 0; i < sections.length; i++) {
-        sections[i].style.display = 'none';
+
+// ========================================================
+//                       CONSTANTS
+// ========================================================
+
+const ID_LOGOUT_BUTTON = 'logoutButtonHeader';
+
+// ========================================================
+
+// ========================================================
+//                         INIT
+// ========================================================
+
+/**
+ * Called once when the page is loaded
+ * to initialize the index / home page.
+ */
+const initIndex = () => {
+    if (!validateSession()) {
+        clearSessionAndLogout();
     }
 
-    // Show the selected section
-    var selectedSection = document.getElementById(sectionId);
-    if (selectedSection) {
-        selectedSection.style.display = 'block';
-    }
+    document.getElementById(ID_LOGOUT_BUTTON).addEventListener('click', clearSessionAndLogout);
+
+    const dial = document.getElementById("dial");
+    const percent = dial.getAttribute("data-percent");
+    dial.style.setProperty("--percent", percent + "%");
+
+    loadTable();
 }
 
-// Initial navigation to home section
-navigateTo('home');
+document.addEventListener('DOMContentLoaded', initIndex);
 
-// Function to toggle loan input display
-function toggleLoanInput() {
-    var loanInput = document.getElementById("loanInput");
-    if (loanInput.style.display === "block") {
-        loanInput.style.display = "none";
-    } else {
-        loanInput.style.display = "block";
-    }
+// ========================================================
+
+const loadTable = () => {
+    const thing = [
+        {
+            clientId: 'x',
+            clientName: 'x',
+            loanAmount: 'x',
+            interestRate: 'x',
+            loanTerm: 'x',
+            status: 'x',
+        },
+        {
+            clientId: 'x',
+            clientName: 'x',
+            loanAmount: 'x',
+            interestRate: 'x',
+            loanTerm: 'x',
+            status: 'x',
+        },
+        {
+            clientId: 'x',
+            clientName: 'x',
+            loanAmount: 'x',
+            interestRate: 'x',
+            loanTerm: 'x',
+            status: 'x',
+        },
+        {
+            clientId: 'x',
+            clientName: 'x',
+            loanAmount: 'x',
+            interestRate: 'x',
+            loanTerm: 'x',
+            status: 'x',
+        },
+        {
+            clientId: 'x',
+            clientName: 'x',
+            loanAmount: 'x',
+            interestRate: 'x',
+            loanTerm: 'x',
+            status: 'x',
+        },
+        {
+            clientId: 'x',
+            clientName: 'x',
+            loanAmount: 'x',
+            interestRate: 'x',
+            loanTerm: 'x',
+            status: 'x',
+        },
+        {
+            clientId: 'x',
+            clientName: 'x',
+            loanAmount: 'x',
+            interestRate: 'x',
+            loanTerm: 'x',
+            status: 'x',
+        },
+        {
+            clientId: 'x',
+            clientName: 'x',
+            loanAmount: 'x',
+            interestRate: 'x',
+            loanTerm: 'x',
+            status: 'x',
+        },
+        {
+            clientId: 'x',
+            clientName: 'x',
+            loanAmount: 'x',
+            interestRate: 'x',
+            loanTerm: 'x',
+            status: 'x',
+        },
+        {
+            clientId: 'x',
+            clientName: 'x',
+            loanAmount: 'x',
+            interestRate: 'x',
+            loanTerm: 'x',
+            status: 'x',
+        },
+        {
+            clientId: 'x',
+            clientName: 'x',
+            loanAmount: 'x',
+            interestRate: 'x',
+            loanTerm: 'x',
+            status: 'x',
+        },
+        {
+            clientId: 'x',
+            clientName: 'x',
+            loanAmount: 'x',
+            interestRate: 'x',
+            loanTerm: 'x',
+            status: 'x',
+        },
+        {
+            clientId: 'x',
+            clientName: 'x',
+            loanAmount: 'x',
+            interestRate: 'x',
+            loanTerm: 'x',
+            status: 'x',
+        },
+        {
+            clientId: 'x',
+            clientName: 'x',
+            loanAmount: 'x',
+            interestRate: 'x',
+            loanTerm: 'x',
+            status: 'x',
+        },
+    ];
+
+    thing.forEach((tin) => {
+        addNewRow(tin.clientId, tin.clientName, tin.loanAmount, tin.interestRate, tin.loanTerm, tin.status);
+    });
 }
 
-// Function to increase loan amount by R1000
-function increaseLoanAmount() {
-    var input = document.getElementById("loanAmount");
-    input.stepUp(1000);
-}
+const addNewRow = (clientId, clientName, loanAmount, interestRate, loanTerm, status) => {
+    const tableBody = document.getElementById('loanTableBody');
+    const newRow = document.createElement('tr');
 
-// Function to decrease loan amount by R1000
-function decreaseLoanAmount() {
-    var input = document.getElementById("loanAmount");
-    input.stepDown(1000);
-}
+    newRow.innerHTML = `
+        <td>${clientId}</td>
+        <td>${clientName}</td>
+        <td>${loanAmount}</td>
+        <td>${interestRate}</td>
+        <td>${loanTerm}</td>
+        <td>${status}</td>
+    `;
 
-// Function to submit loan request (you can customize this function as per your backend logic)
-function submitLoanRequest() {
-    var loanAmount = document.getElementById("loanAmount").value;
-    alert("Loan requested: R" + loanAmount); // Example: alerting the loan amount, replace with actual submission logic
-    // You can add additional logic here, such as submitting the form or handling further actions
-}
-
-// Function to toggle loan process display
-function toggleLoanProcess() {
-    var loanProcess = document.getElementById("loanProcess");
-    var requestLoanBtn = document.querySelector(".request-loan-btn");
-
-    if (loanProcess.style.display === "block") {
-        loanProcess.style.display = "none";
-        requestLoanBtn.textContent = "Request Loan";
-        requestLoanBtn.classList.remove("cancel-btn");
-    } else {
-        loanProcess.style.display = "block";
-        requestLoanBtn.textContent = "Cancel Process";
-        requestLoanBtn.classList.add("cancel-btn");
-    }
-}
-
-// Function to increase loan amount by R1000
-function increaseLoanAmount() {
-    var input = document.getElementById("loanAmount");
-    input.stepUp(1000);
-}
-
-// Function to decrease loan amount by R1000
-function decreaseLoanAmount() {
-    var input = document.getElementById("loanAmount");
-    input.stepDown(1000);
-}
-
-// Function to submit loan request (you can customize this function as per your backend logic)
-function submitLoanRequest() {
-    var loanAmount = document.getElementById("loanAmount").value;
-    alert("Loan requested: R" + loanAmount); // Example: alerting the loan amount, replace with actual submission logic
-    // You can add additional logic here, such as submitting the form or handling further actions
-}
-
-// Function to cancel loan process and revert to original state
-function cancelLoanProcess() {
-    var loanProcess = document.getElementById("loanProcess");
-    var requestLoanBtn = document.querySelector(".request-loan-btn");
-
-    loanProcess.style.display = "none";
-    requestLoanBtn.textContent = "Request Loan";
-    requestLoanBtn.classList.remove("cancel-btn");
+    tableBody.appendChild(newRow);
 }
