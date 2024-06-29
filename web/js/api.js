@@ -4,7 +4,7 @@ import { API_URL } from "./config.js";
 const apiGetWithAuth = async (endpoint, options = {}) => {
     const token = sessionStorage.getItem('idToken');
 
-    // validateToken(token);
+    validateToken(token);
 
     const headers = new Headers(options.headers || {});
 
