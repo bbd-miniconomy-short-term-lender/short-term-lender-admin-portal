@@ -1,9 +1,10 @@
-// you can replace this -- jsut for testing
+import { LOGIN_URL } from './config.js';
 
-document.getElementById('loginButton').addEventListener('click', function () {
-    sessionStorage.setItem('idToken', 'idToken');
-    sessionStorage.setItem('accessToken', 'accessToken');
-    window.location.href = 'http://localhost:5500/';
+console.log(LOGIN_URL)
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('loginButton').addEventListener('click', function () {
+        sessionStorage.setItem('idToken', 'idToken');
+        sessionStorage.setItem('accessToken', 'accessToken');
+        window.location.href = LOGIN_URL;
+    });
 });
-
-// ====================
