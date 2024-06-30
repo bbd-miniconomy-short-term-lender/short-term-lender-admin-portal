@@ -37,7 +37,25 @@ const initIndex = () => {
 
     updateDialPercent(ID_REPAYMENT_DIAL, 0);
     updateSimpleMetric(ID_INTEREST_RATE_METRIC, 0);
-    loadTable();
+
+    const dummyLoanRecords = [
+        {
+            personaId: '1',
+            loanAmount: '100',
+            status: 'Active',
+        },
+        {
+            personaId: '2',
+            loanAmount: '200',
+            status: 'Paid Off',
+        },
+        {
+            personaId: '3',
+            loanAmount: '300',
+            status: 'Active',
+        },
+    ];
+    populateLoanTable(dummyLoanRecords);
 
     // -===============================-
 
@@ -47,41 +65,38 @@ document.addEventListener('DOMContentLoaded', initIndex);
 
 // ========================================================
 
-const loadTable = () => {
-    const thing = [
-        {
-            clientId: '1',
-            loanAmount: 'x',
-            status: 'x',
-        },
-        {
-            clientId: '2',
-            loanAmount: 'x',
-            status: 'x',
-        },
-        {
-            clientId: '3',
-            loanAmount: 'x',
-            status: 'x',
-        },
-    ];
+// ========================================================
+//                 MAIN METHODS / FUNCTIONS
+// ========================================================
 
-    thing.forEach((tin) => {
-        addNewRow(tin.clientId, tin.loanAmount, tin.status);
+/**
+ * Takes an array of records used to populate
+ * the rows of the dashboard table.
+ * @param {Object} records 
+ */
+const populateLoanTable = (records) => {
+    const tableBody = document.getElementById(ID_LOAN_TABLE);
+    records.forEach((record) => {
+        const newRow = document.createElement('tr');
+        const { personaId, loanAmount, status } = record;
+
+        // Create personaId cell
+        const personaIdCell = document.createElement('td');
+        personaIdCell.textContent = personaId;
+        newRow.appendChild(personaIdCell);
+
+        // Create loanAmount cell
+        const loanAmountCell = document.createElement('td');
+        loanAmountCell.textContent = loanAmount;
+        newRow.appendChild(loanAmountCell);
+
+        // Create status cell
+        const statusCell = document.createElement('td');
+        statusCell.textContent = status;
+        newRow.appendChild(statusCell);
+
+        tableBody.appendChild(newRow);
     });
-}
-
-const addNewRow = (personaId, loanAmount, status) => {
-    const tableBody = document.getElementById('loanTableBody');
-    const newRow = document.createElement('tr');
-
-    newRow.innerHTML = `
-        <td>${personaId}</td>
-        <td>${loanAmount}</td>
-        <td>${status}</td>
-    `;
-
-    tableBody.appendChild(newRow);
 }
 
 /**
@@ -90,6 +105,10 @@ const addNewRow = (personaId, loanAmount, status) => {
  */
 const handleTableDrillDown = async () => {
     let target = event.target;
+
+    if (target.nodeName === 'TH' || target.parentElement.nodeName === 'THEAD') {
+        return;
+    }
 
     while (target && target.nodeName !== 'TR') {
         target = target.parentElement;
@@ -101,6 +120,8 @@ const handleTableDrillDown = async () => {
         // here we will drill into this persona record @Rotenda
     }
 }
+
+// ========================================================
 
 // ========================================================
 //                    Auxillary Methods
