@@ -1,5 +1,5 @@
 import { validateSession, clearSessionAndLogout } from './auth.js';
-import { apiGetWithAuth } from './api.js';
+import { apiFetchWithAuth } from './api.js';
 
 
 // ========================================================
@@ -35,10 +35,12 @@ const initIndex = () => {
 
     // -==      Init Data View       ==-
 
+    // TODO : get data for metrics
     updateDialPercent(ID_REPAYMENT_DIAL, 0);
     updateSimpleMetric(ID_INTEREST_RATE_METRIC, 0);
 
-    const dummyLoanRecords = [
+    // const loanRecords = await apiFetchWithAuth('/loans/info');
+    const loanRecords = [
         {
             personaId: '1',
             loanAmount: '100',
@@ -55,7 +57,7 @@ const initIndex = () => {
             status: 'Active',
         },
     ];
-    populateLoanTable(dummyLoanRecords);
+    populateLoanTable(loanRecords);
 
     // -===============================-
 

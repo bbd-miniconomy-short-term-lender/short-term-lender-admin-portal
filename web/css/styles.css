@@ -1,11 +1,12 @@
 :root {
   /* -clr-lt Light Colour Theme */
-  --shadow-clr-lt: #013440;
+  --shadow-clr-lt: #00057f;
   --highlight-clr-lt: #d4d4d4;
-  --background-clr-lt: #f2f2f2;
-  --header-background-clr-lt: #2f6c73;
-  --text-clr-lt: #011526;
-  --metric-clr-lt: #2f6c73;
+  --background-clr-lt: #e9e7e7;
+  --header-background-clr-lt: #97b5e9;
+  --text-header-clr-lt: #ffffff;
+  --text-clr-lt: #00057f;
+  --metric-clr-lt: #00057f;
 }
 
 * {
@@ -17,7 +18,7 @@
 body {
   background-image: url("../assets/header-back.jpg");
   background-repeat: repeat;
-  background-size: 20%;
+  background-size: 20rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -37,6 +38,7 @@ header {
   background-color: var(--header-background-clr-lt);
   width: 100%;
   height: 7rem;
+  color: var(--text-header-clr-lt);
 }
 
 #titleHeader {
@@ -126,13 +128,13 @@ th {
 
 tr:hover {
   transform: scale(1.001);
-  background-color: rgba(0, 99, 13, 0.05);
+  background-color: rgba(0, 40, 99, 0.05);
   transition: transform 0.2s, background-color 0.2s;
 }
 
 tr:nth-child(even):hover {
   transform: scale(1.001);
-  background-color: rgba(0, 99, 13, 0.08);
+  background-color: rgba(0, 24, 88, 0.08);
   transition: transform 0.2s, background-color 0.2s;
 }
 

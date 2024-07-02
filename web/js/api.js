@@ -1,7 +1,7 @@
 import { clearSessionAndLogout, validateToken } from "./auth.js";
 import { API_URL } from "./config.js";
 
-const apiGetWithAuth = async (endpoint, options = {}) => {
+const apiFetchWithAuth = async (endpoint, options = {}) => {
     const token = sessionStorage.getItem('idToken');
 
     validateToken(token);
@@ -23,4 +23,4 @@ const apiGetWithAuth = async (endpoint, options = {}) => {
     }
 }
 
-export { apiGetWithAuth }
+export { apiFetchWithAuth }
