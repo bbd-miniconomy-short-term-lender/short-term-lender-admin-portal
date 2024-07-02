@@ -11,6 +11,9 @@ let isEditing = false;
 const ID_REPAYMENT_DIAL = 'repaymentDial';
 const ID_INTEREST_RATE_METRIC = 'interestRateMetric';
 const ID_LOAN_TABLE = 'loanTableBody';
+const NAVIGATION_BACK_BUTTON = 'backButton'
+const EDIT_BUTTON = 'EditButton'
+const editButton = document.getElementById(EDIT_BUTTON);
 
 // ========================================================
 
@@ -30,7 +33,26 @@ const initIndex = () => {
     // -== Subscribe Event Listeners ==-
 
     document.getElementById(ID_LOGOUT_BUTTON).addEventListener('click', clearSessionAndLogout);
-    document.getElementById(ID_LOAN_TABLE).addEventListener('click', handleTableDrillDown);
+    document.getElementById(ID_LOAN_TABLE).addEventListener('click', showPersonalDashboard);
+    document.getElementById(NAVIGATION_BACK_BUTTON).addEventListener('click', () => {showDashboard()});
+    document.getElementById(EDIT_BUTTON).addEventListener('click', () => {
+    
+        if (isEditing) {
+            editButton.textContent = 'Edit Status'; // Change button text back
+            isEditing = false;
+        } else {
+            // Enter edit mode
+            editButton.textContent = 'Save Changes'; // Change button text
+            isEditing = true;
+        }
+    });
+
+    // document.addEventListener('DOMContentLoaded', () => {
+    //     const backButton = document.getElementById('backButton');
+    //     backButton.addEventListener('click', () => {
+    //         showDashboard();
+    //     });
+    // });
 
     // -===============================-
 
@@ -110,27 +132,6 @@ const populateLoanTable = (records) => {
     });
 }
 
-/**
- * Handler for the `click` event on a row in the loan
- * information table, to drill down.
- */
-const handleTableDrillDown = async () => {
-    let target = event.target;
-
-    if (target.nodeName === 'TH' || target.parentElement.nodeName === 'THEAD') {
-        return;
-    }
-
-    while (target && target.nodeName !== 'TR') {
-        target = target.parentElement;
-    }
-
-    if (target) {
-        const personaId = target.cells[0].textContent;
-        alert('Clicked Persona ID: ' + personaId);
-        // here we will drill into this persona record @Rotenda
-    }
-}
 
 // ========================================================
 
@@ -158,6 +159,7 @@ const updateSimpleMetric = (metricId, newValue) => {
     const metric = document.getElementById(metricId);
     metric.setAttribute("data-percent", newValue);
 }
+
 const showPersonalDashboard = (clientId) => {
     const dashboardContainer = document.getElementById('dashboardContainer');
     const personalDashboard = document.getElementById('personalDashboard');
@@ -217,13 +219,6 @@ const fetchData = (clientId) => {
     });
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    const backButton = document.getElementById('backButton');
-    backButton.addEventListener('click', () => {
-        showDashboard();
-    });
-});
-
 function showDashboard() {
     const dashboardContainer = document.getElementById('dashboardContainer');
     const personalDashboard = document.getElementById('personalDashboard');
@@ -235,21 +230,6 @@ function showDashboard() {
     personalDashboard.style.display = 'none';
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    const editButton = document.getElementById('EditButton');
-    const monthlyRepaymentValue = document.getElementById('monthlyRepaymentValue');
-  
-    editButton.addEventListener('click', () => {
-      if (isEditing) {
-        editButton.textContent = 'Edit Status'; // Change button text back
-        isEditing = false;
-      } else {
-        // Enter edit mode
-        editButton.textContent = 'Save Changes'; // Change button text
-        isEditing = true;
-      }
-    });
-});
   
 
 // ========================================================

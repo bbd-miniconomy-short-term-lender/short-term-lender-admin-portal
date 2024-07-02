@@ -211,7 +211,7 @@ tr:nth-child(even) {
 }
 
 #backButton {
-  background-color: #7eaf83;
+  background-color: var(--header-background-clr-lt);
   color: #E9E7E7;
   padding: 10px 20px;
   border: none;
@@ -222,12 +222,12 @@ tr:nth-child(even) {
 }
 
 #backButton:hover {
-  background-color: #7eaf83;
+  background-color: var(--shadow-clr-lt);
   box-shadow: 0 4px 8px rgba(0,0,0,0.2);
 }
 
 #EditButton {
-  background-color: #7eaf83;
+  background-color: var(--header-background-clr-lt);
   color: #E9E7E7;
   padding: 10px 20px;
   border: none;
@@ -239,7 +239,7 @@ tr:nth-child(even) {
 }
 
 #EditButton:hover {
-  background-color: #7eaf83;
+  background-color: var(--shadow-clr-lt);
   box-shadow: 0 4px 8px rgba(0,0,0,0.2);
 }
 
