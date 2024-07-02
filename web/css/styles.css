@@ -86,6 +86,16 @@ header {
   width: 100%;
 }
 
+#personalDashboard {
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 0 1rem rgba(0, 0, 0, 0.1);
+  width: 100%;
+} 
+
 table {
   width: 100%;
   border-collapse: collapse;
@@ -181,4 +191,49 @@ tr:nth-child(even) {
 
 .pannelDescription {
   font-weight: bold;
+  justify-content: center;
 }
+
+#backButton {
+  background-color: #7eaf83;
+  color: #E9E7E7;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 15px;
+  cursor: pointer;
+  width: 20%; 
+  transition: background-color 0.3s ease;
+}
+
+#backButton:hover {
+  background-color: #7eaf83;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+#EditButton {
+  background-color: #7eaf83;
+  color: #E9E7E7;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 15px;
+  justify-content: right;
+  cursor: pointer;
+  width: 20%; 
+  transition: background-color 0.3s ease;
+}
+
+#EditButton:hover {
+  background-color: #7eaf83;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.monthly-repayments::before {
+  content: attr(data-percent);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 5em;
+  font-weight: bold;
+  color: var(--metric-clr-lt);
+}
+
