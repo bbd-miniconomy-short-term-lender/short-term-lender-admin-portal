@@ -15,7 +15,7 @@
         <h2>Loanify: Admin Portal</h2>
       </section>
       <section id="userOptionsHeader">
-        <button id="logoutButtonHeader">Logout</button>
+        <button id="logoutButtonHeader" title="Logout"></button>
         <p id="userNameHeader">user</p>
       </section>
     </header>
@@ -35,10 +35,21 @@
             <p class="pannelDescription">Repayment Progress</p>
           </div>
         </div>
+        <div id="loadInfo">
+          <label for="idInput">Enter Loan ID:</label>
+          <input
+            type="number"
+            id="idInput"
+            name="idInput"
+            placeholder="Loan ID"
+          />
+          <button id="loadInfoButton">Load Info</button>
+        </div>
         <div id="dashTable">
           <table id="loanTableBody">
             <thead>
               <tr>
+                <th>Loan ID</th>
                 <th>Persona ID</th>
                 <th>Loan Amount (R)</th>
                 <th>Status</th>
@@ -48,23 +59,63 @@
           </table>
         </div>
       </section>
-    
-      <section id="personalDashboard">
-        <button id="backButton">Back to Dashboard</button>
-        <button id="EditButton">Edit Status</button>
+
+      <section id="personalDashboard" class="container">
+        <section id="personalPannelHeader">
+          <h1 id="ppHeading">Loan Breakdown</h1>
+          <section id="controlsPD">
+            <button id="backButton" class="ctlButton">Back to Dashboard</button>
+            <button id="EditButton" class="ctlButton">Edit Status</button>
+          </section>
+        </section>
         <div class="pannels">
           <div class="interest-rate-metric" data-percent="Loading...">
             <p class="pannelDescription">Interest Rate</p>
           </div>
-        
+
           <div class="monthly-repayments" data-percent="Loading...">
             <p class="pannelDescription">Monthly Repayments</p>
           </div>
           <div class="radial-dial">
-            <div class="dial" id="dial-personal" data-percent="Loading..."></div>
+            <div
+              class="dial"
+              id="dial-personal"
+              data-percent="Loading..."
+            ></div>
             <p class="pannelDescription">Repayment Progress</p>
           </div>
         </div>
+        <section id="personalInformation">
+          <div class="info-card">
+            <p class="info-title">Persona ID</p>
+            <p class="info-value" id="personaIDValue">Loading...</p>
+          </div>
+          <div class="info-card">
+            <p class="info-title">Loan Amount (R)</p>
+            <p class="info-value" id="loanAmount">Loading...</p>
+          </div>
+          <div class="info-card">
+            <p class="info-title">Payment Total to Date (R)</p>
+            <p class="info-value" id="payTotIDValue">Loading...</p>
+          </div>
+          <div class="info-card">
+            <p class="info-title">Interest Incurred (R)</p>
+            <p class="info-value" id="interestAmtValue">Loading...</p>
+          </div>
+          <div class="info-card">
+            <p class="info-title">Outstanding Amount (R)</p>
+            <p class="info-value" id="outstnadingAmtValue">Loading...</p>
+          </div>
+          <div class="info-card">
+            <p class="info-title">Term (years)</p>
+            <p class="info-value" id="loanTerm">Loading...</p>
+          </div>
+          <div class="info-card">
+            <p class="info-title">Status</p>
+            <p class="info-value" id="statusValue">Loading...</p>
+            <input type="text" id="statusInput" style="display: none" />
+          </div>
+        </section>
       </section>
     </main>
   </body>

@@ -50,4 +50,8 @@ function validateToken(token) {
     }
 }
 
-export { validateSession, clearSessionAndLogout, parseJwt, validateToken }
+const getUsername = () => {
+    return parseJwt(sessionStorage.getItem('idToken')).given_name ?? 'Doe';
+}
+
+export { validateSession, clearSessionAndLogout, parseJwt, validateToken, getUsername }
