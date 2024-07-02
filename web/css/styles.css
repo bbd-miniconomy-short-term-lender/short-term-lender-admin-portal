@@ -1,11 +1,11 @@
 :root {
   /* -clr-lt Light Colour Theme */
-  --shadow-clr-lt: #6b6b6b;
+  --shadow-clr-lt: #013440;
   --highlight-clr-lt: #d4d4d4;
-  --background-clr-lt: #f8f8f8;
-  --header-background-clr-lt: #7eaf83;
-  --text-clr-lt: #1b573a;
-  --metric-clr-lt: #4b9b58;
+  --background-clr-lt: #f2f2f2;
+  --header-background-clr-lt: #2f6c73;
+  --text-clr-lt: #011526;
+  --metric-clr-lt: #2f6c73;
 }
 
 * {
@@ -15,6 +15,9 @@
 }
 
 body {
+  background-image: url("../assets/header-back.jpg");
+  background-repeat: repeat;
+  background-size: 20%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -82,7 +85,7 @@ header {
   background-color: #fff;
   padding: 1rem;
   border-radius: 0.5rem;
-  box-shadow: 0 0 1rem rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 1rem var(--shadow-clr-lt);
   width: 100%;
 }
 
@@ -110,8 +113,9 @@ thead {
 }
 
 #dashTable {
-  max-height: 40vh; /* Adjust this value as needed */
-  overflow-y: auto; /* Enables vertical scrolling */
+  min-height: 40vh;
+  max-height: 50vh;
+  overflow-y: auto;
 }
 
 table,
@@ -128,6 +132,18 @@ td {
 
 th {
   background-color: #f2f2f2;
+}
+
+tr:hover {
+  transform: scale(1.001);
+  background-color: rgba(0, 99, 13, 0.05);
+  transition: transform 0.2s, background-color 0.2s;
+}
+
+tr:nth-child(even):hover {
+  transform: scale(1.001);
+  background-color: rgba(0, 99, 13, 0.08);
+  transition: transform 0.2s, background-color 0.2s;
 }
 
 tr:nth-child(even) {

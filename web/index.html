@@ -20,14 +20,18 @@
       </section>
     </header>
     <main id="contentContainer">
-      <section id="dashboardContainer">
+      <section id="dashboardContainer" class="container">
         <h1>Admin Dashboard</h1>
         <div class="pannels">
-          <div class="interest-rate-metric" data-percent="12">
+          <div
+            class="interest-rate-metric"
+            data-percent="-"
+            id="interestRateMetric"
+          >
             <p class="pannelDescription">Current Lending Rate</p>
           </div>
           <div class="radial-dial">
-            <div class="dial" id="dial" data-percent="48"></div>
+            <div class="dial" id="repaymentDial" data-percent="-"></div>
             <p class="pannelDescription">Repayment Progress</p>
           </div>
         </div>
@@ -35,11 +39,8 @@
           <table id="loanTableBody">
             <thead>
               <tr>
-                <th>Client ID</th>
-                <th>Client Name</th>
-                <th>Loan Amount</th>
-                <th>Interest Rate</th>
-                <th>Loan Term</th>
+                <th>Persona ID</th>
+                <th>Loan Amount (R)</th>
                 <th>Status</th>
               </tr>
             </thead>

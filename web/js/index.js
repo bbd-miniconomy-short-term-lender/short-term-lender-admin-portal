@@ -8,6 +8,9 @@ import { apiGetWithAuth } from './api.js';
 
 const ID_LOGOUT_BUTTON = 'logoutButtonHeader';
 let isEditing = false;
+const ID_REPAYMENT_DIAL = 'repaymentDial';
+const ID_INTEREST_RATE_METRIC = 'interestRateMetric';
+const ID_LOAN_TABLE = 'loanTableBody';
 
 // ========================================================
 
@@ -24,14 +27,39 @@ const initIndex = () => {
         clearSessionAndLogout();
     }
 
+    // -== Subscribe Event Listeners ==-
+
     document.getElementById(ID_LOGOUT_BUTTON).addEventListener('click', clearSessionAndLogout);
+    document.getElementById(ID_LOAN_TABLE).addEventListener('click', handleTableDrillDown);
 
-    const dial = document.getElementById("dial");
-    const percent = dial.getAttribute("data-percent");
-    dial.style.setProperty("--percent", percent + "%");
+    // -===============================-
 
-    // Load the table
-    loadTable();
+    // -==      Init Data View       ==-
+
+    updateDialPercent(ID_REPAYMENT_DIAL, 0);
+    updateSimpleMetric(ID_INTEREST_RATE_METRIC, 0);
+
+    const dummyLoanRecords = [
+        {
+            personaId: '1',
+            loanAmount: '100',
+            status: 'Active',
+        },
+        {
+            personaId: '2',
+            loanAmount: '200',
+            status: 'Paid Off',
+        },
+        {
+            personaId: '3',
+            loanAmount: '300',
+            status: 'Active',
+        },
+    ];
+    populateLoanTable(dummyLoanRecords);
+
+    // -===============================-
+
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -47,156 +75,88 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 // ========================================================
-const loadTable = () => {
-    const thing = [
-        {
-            clientId: '001',
-            clientName: 'John Doe',
-            loanAmount: '$10,000',
-            interestRate: '5%',
-            loanTerm: '2 years',
-            status: 'Active',
-        },
-        {
-            clientId: '002',
-            clientName: 'Jane Smith',
-            loanAmount: '$15,000',
-            interestRate: '6%',
-            loanTerm: '3 years',
-            status: 'Pending',
-        },
-        {
-            clientId: '003',
-            clientName: 'Bob Johnson',
-            loanAmount: '$8,500',
-            interestRate: '4.5%',
-            loanTerm: '1 year',
-            status: 'Paid Off',
-        },
-        {
-            clientId: '004',
-            clientName: 'Alice Brown',
-            loanAmount: '$20,000',
-            interestRate: '7%',
-            loanTerm: '5 years',
-            status: 'Active',
-        },
-        {
-            clientId: '005',
-            clientName: 'Michael Lee',
-            loanAmount: '$12,500',
-            interestRate: '5.5%',
-            loanTerm: '2 years',
-            status: 'Pending',
-        },
-        {
-            clientId: '006',
-            clientName: 'Emily Davis',
-            loanAmount: '$18,000',
-            interestRate: '6.2%',
-            loanTerm: '4 years',
-            status: 'Active',
-        },
-        {
-            clientId: '007',
-            clientName: 'David Wilson',
-            loanAmount: '$9,000',
-            interestRate: '4%',
-            loanTerm: '1.5 years',
-            status: 'Pending',
-        },
-        {
-            clientId: '008',
-            clientName: 'Sophia Martinez',
-            loanAmount: '$14,200',
-            interestRate: '5.8%',
-            loanTerm: '3 years',
-            status: 'Active',
-        },
-        {
-            clientId: '009',
-            clientName: 'James Moore',
-            loanAmount: '$22,000',
-            interestRate: '7.2%',
-            loanTerm: '5 years',
-            status: 'Active',
-        },
-        {
-            clientId: '010',
-            clientName: 'Olivia Taylor',
-            loanAmount: '$16,500',
-            interestRate: '6%',
-            loanTerm: '3.5 years',
-            status: 'Pending',
-        },
-        {
-            clientId: '011',
-            clientName: 'Ethan Anderson',
-            loanAmount: '$11,800',
-            interestRate: '5.3%',
-            loanTerm: '2.5 years',
-            status: 'Active',
-        },
-        {
-            clientId: '012',
-            clientName: 'Ava Garcia',
-            loanAmount: '$19,500',
-            interestRate: '6.5%',
-            loanTerm: '4 years',
-            status: 'Active',
-        },
-        {
-            clientId: '013',
-            clientName: 'Noah Wilson',
-            loanAmount: '$7,500',
-            interestRate: '3.8%',
-            loanTerm: '1 year',
-            status: 'Paid Off',
-        },
-        {
-            clientId: '014',
-            clientName: 'Isabella Thompson',
-            loanAmount: '$13,700',
-            interestRate: '5.7%',
-            loanTerm: '2.8 years',
-            status: 'Pending',
-        },
-        {
-            clientId: '015',
-            clientName: 'Mason Hernandez',
-            loanAmount: '$17,300',
-            interestRate: '6.1%',
-            loanTerm: '3.8 years',
-            status: 'Active',
-        },
-    ];
 
-    thing.forEach(item => {
-        addNewRow(item.clientId, item.clientName, item.loanAmount, item.interestRate, item.loanTerm, item.status);
+// ========================================================
+//                 MAIN METHODS / FUNCTIONS
+// ========================================================
+
+/**
+ * Takes an array of records used to populate
+ * the rows of the dashboard table.
+ * @param {Object} records 
+ */
+const populateLoanTable = (records) => {
+    const tableBody = document.getElementById(ID_LOAN_TABLE);
+    records.forEach((record) => {
+        const newRow = document.createElement('tr');
+        const { personaId, loanAmount, status } = record;
+
+        // Create personaId cell
+        const personaIdCell = document.createElement('td');
+        personaIdCell.textContent = personaId;
+        newRow.appendChild(personaIdCell);
+
+        // Create loanAmount cell
+        const loanAmountCell = document.createElement('td');
+        loanAmountCell.textContent = loanAmount;
+        newRow.appendChild(loanAmountCell);
+
+        // Create status cell
+        const statusCell = document.createElement('td');
+        statusCell.textContent = status;
+        newRow.appendChild(statusCell);
+
+        tableBody.appendChild(newRow);
     });
 }
 
+/**
+ * Handler for the `click` event on a row in the loan
+ * information table, to drill down.
+ */
+const handleTableDrillDown = async () => {
+    let target = event.target;
 
-const addNewRow = (clientId, clientName, loanAmount, interestRate, loanTerm, status) => {
-    const tableBody = document.getElementById('loanTableBody');
-    const newRow = document.createElement('tr');
+    if (target.nodeName === 'TH' || target.parentElement.nodeName === 'THEAD') {
+        return;
+    }
 
-    newRow.innerHTML = `
-        <td class="client-id">${clientId}</td>
-        <td>${clientName}</td>
-        <td>${loanAmount}</td>
-        <td>${interestRate}</td>
-        <td>${loanTerm}</td>
-        <td>${status}</td>
-    `;
+    while (target && target.nodeName !== 'TR') {
+        target = target.parentElement;
+    }
 
-    // Add event listener to clientID cell
-    const clientIdCell = newRow.querySelector('.client-id');
-    clientIdCell.addEventListener('click', () => {
-        showPersonalDashboard(clientId);
-    });
+    if (target) {
+        const personaId = target.cells[0].textContent;
+        alert('Clicked Persona ID: ' + personaId);
+        // here we will drill into this persona record @Rotenda
+    }
+}
 
-    tableBody.appendChild(newRow);
+// ========================================================
+
+// ========================================================
+//                    Auxillary Methods
+// ========================================================
+
+/**
+ * Updates the dial percentage.
+ * @param {string} dialId 
+ * @param {number} newPercent 
+ */
+const updateDialPercent = (dialId, newPercent) => {
+    const dial = document.getElementById(dialId);
+    dial.setAttribute("data-percent", newPercent);
+    dial.style.setProperty("--percent", newPercent + "%");
+}
+
+/**
+ * Sets a the value of a metric.
+ * @param {string} metricId 
+ * @param {number} newValue 
+ */
+const updateSimpleMetric = (metricId, newValue) => {
+    const metric = document.getElementById(metricId);
+    metric.setAttribute("data-percent", newValue);
 }
 const showPersonalDashboard = (clientId) => {
     const dashboardContainer = document.getElementById('dashboardContainer');
@@ -291,3 +251,5 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
   
+
+// ========================================================
