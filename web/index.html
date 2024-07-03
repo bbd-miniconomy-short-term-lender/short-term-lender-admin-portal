@@ -38,13 +38,14 @@
         <div id="loadInfo">
           <label for="idInput">Enter Loan ID:</label>
           <input
-            type="number"
-            id="idInput"
-            name="idInput"
-            placeholder="Loan ID"
+              type="number"
+              id="idInput"
+              name="idInput"
+              placeholder="Loan ID"
+              min="1" 
           />
           <button id="loadInfoButton">Load Info</button>
-        </div>
+        </div>      
         <div id="dashTable">
           <table id="loanTableBody">
             <thead>
@@ -113,8 +114,14 @@
           <div class="info-card">
             <p class="info-title">Status</p>
             <p class="info-value" id="statusValue">Loading...</p>
-            <input type="text" id="statusInput" style="display: none" />
+            <select id="statusSelect" style="display: none;">
+                <option value="Active">Active</option>
+                <option value="Pending">Pending</option>
+                <option value="Complete">Complete</option>
+                <option value="Cancelled">Cancelled</option>
+            </select>
           </div>
+        
         </section>
       </section>
     </main>

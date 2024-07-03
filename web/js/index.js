@@ -7,7 +7,6 @@ import { apiFetchWithAuth } from './api.js';
 // ========================================================
 
 const ID_LOGOUT_BUTTON = 'logoutButtonHeader';
-let isEditing = false;
 const ID_REPAYMENT_DIAL = 'repaymentDial';
 const ID_INTEREST_RATE_METRIC = 'interestRateMetric';
 const ID_LOAN_TABLE = 'loanTableBody';
@@ -26,11 +25,23 @@ const ID_PP_STATUS = 'statusValue';
 const ID_PP_LOAN_AMOUNT = 'loanAmount';
 const ID_PP_LOAN_TERM = 'loanTerm';
 const ID_PP_LOAN_INTEREST = 'interestAmtValue';
-const ID_PP_STATUS_EDIT = 'statusInput';
-
 const ID_PP_HEADING = 'ppHeading';
+const STATUS_VALUE = 'statusValue';
+const STATUS_SELECT = 'statusSelect';
 
 // ========================================================
+
+
+// ========================================================
+//                       VARIABLES
+// ========================================================
+
+let isEditing = false;
+let statusCache = '';
+let currentStatus = '';
+
+// ========================================================
+
 
 // ========================================================
 //                         INIT
@@ -103,6 +114,37 @@ document.addEventListener('DOMContentLoaded', () => {
         personalDashboardSection.style.display = "none";
     }
 });
+
+// Wait for the document to load
+document.addEventListener("DOMContentLoaded", function() {
+    // Get the element that displays the status
+    var statusElement = document.getElementById("statusValue");
+
+    // Initial status text
+    var statusText = "Loading...";
+
+    // Function to update the status text and its color
+    function updateStatus(status) {
+        statusElement.textContent = status; // Update the text content
+
+        // Update the color based on the status
+        if (status === "Active") {
+            statusElement.style.color = "orange";
+        } else if (status === "Complete") {
+            statusElement.style.color = "green";
+        } else if (status === "Cancelled") {
+            statusElement.style.color = "red";
+        } else {
+            statusElement.style.color = "black"; // Default color
+        }
+    }
+
+    // Example of updating the status (replace this with your actual dynamic update logic)
+    // For example, after fetching data or based on user interaction
+    // Assuming you have a way to retrieve or set the status, update it like this:
+    updateStatus("Active"); // Replace "Active" with your actual status value
+});
+
 
 
 // ========================================================
@@ -259,13 +301,10 @@ const fetchData = (loanId) => {
 }
 
 function showDashboard() {
-    const editButton = document.getElementById(EDIT_BUTTON);
-    const statusEdit = document.getElementById(ID_PP_STATUS_EDIT);
     const statusValue = document.getElementById(ID_PP_STATUS);
 
-    editButton.textContent = 'Edit Status';
-    isEditing = false;
-    statusEdit.style.display = 'none';
+    isEditing = true;
+    handleStatusEdit();
     statusValue.style.display = 'block';
 
     const dashboardContainer = document.getElementById('dashboardContainer');
@@ -305,28 +344,56 @@ function clearPersonalMetrics() {
 
 async function handleStatusEdit() {
     const editButton = document.getElementById(EDIT_BUTTON);
-    const statusEdit = document.getElementById(ID_PP_STATUS_EDIT);
-    const statusValue = document.getElementById(ID_PP_STATUS);
+    const statusValue = document.getElementById(STATUS_VALUE);
+    const statusSelect = document.getElementById(STATUS_SELECT);
 
     if (isEditing) {
+        // Save changes
+        let newStatus = statusSelect.value;
+        if(newStatus === '') {
+            newStatus = statusCache
+        }
         editButton.textContent = 'Edit Status';
         isEditing = false;
-        statusEdit.style.display = 'none';
+        statusSelect.style.display = 'none';
         statusValue.style.display = 'block';
-
-        // save
-        const newStatus = sanitizeInput(statusEdit.value);
-        const personaId = document.getElementById(ID_PP_PERSONAID).textContent;
-        await postStatusUpdate(personaId, newStatus);
         statusValue.textContent = newStatus;
+        await saveStatus(newStatus); // Assume saveStatus is a function to save the status
+        
+        // Update status color based on selected status
+        updateStatusColor(newStatus);
+
     } else {
+        // Enter edit mode
+        statusCache = statusValue.textContent;
         editButton.textContent = 'Save Changes';
         isEditing = true;
-        statusEdit.style.display = 'block';
+        statusSelect.style.display = 'inline-block';
         statusValue.style.display = 'none';
-        statusEdit.value = statusValue.textContent;
+        statusSelect.value = currentStatus;
     }
 }
+
+// Function to update status color based on selected status
+function updateStatusColor(status) {
+    const statusValue = document.getElementById(STATUS_VALUE);
+    if (status === 'Active') {
+        statusValue.style.color = 'orange';
+    } else if (status === 'Complete') {
+        statusValue.style.color = 'green';
+    } else if (status === 'Cancelled') {
+        statusValue.style.color = 'red';
+    } else {
+        statusValue.style.color = 'black'; // Default color
+    }
+}
+
+// Function to save status (mock async function)
+async function saveStatus(newStatus) {
+    // Mock async operation (replace with actual save logic)
+    console.log('Saving status:', newStatus);
+}
+
 
 async function postStatusUpdate(loanId, newStatus) {
     const options = {

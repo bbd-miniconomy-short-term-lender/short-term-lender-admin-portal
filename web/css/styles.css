@@ -353,9 +353,52 @@ tr:nth-child(even) {
   }
 }
 
-#statusInput {
-  text-align: center;
-  font-size: 1.2em;
-  color: #333;
-  width: auto;
+#statusSelect {
+  width: 50%;
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  justify-content: center;
+  background-color: #fff;
+  cursor: pointer;
 }
+
+#loadInfoButton {
+  background-color: var(--header-background-clr-lt);
+  color: #e9e7e7;
+  padding: 0.1rem 0.2rem;
+  border: none;
+  border-radius: 0.4rem;
+  justify-content: right;
+  cursor: pointer;
+  width: 6rem;
+  height: 2rem;
+  transition: background-color 0.3s ease;
+}
+
+#loadInfoButton:hover {
+  background-color: var(--shadow-clr-lt);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+#loadInfo {
+  flex-direction: column;
+  margin-top: 20px; /* Adjust as needed */
+}
+
+#idInput {
+  width: 20%;
+  padding: 6px;
+  margin-top: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box; /* Ensures padding doesn't affect width */
+}
+
+#idInput:focus {
+  outline: none; /* Remove outline on focus */
+  border-color: var(--header-background-clr-lt); /* Example focus color */
+}
+
