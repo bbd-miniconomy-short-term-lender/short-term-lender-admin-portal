@@ -28,6 +28,8 @@ const ID_PP_HEADING = 'ppHeading';
 const STATUS_VALUE = 'statusValue';
 const STATUS_SELECT = 'statusSelect';
 
+let currentLoanIdFocus = -1;
+
 // ========================================================
 
 
@@ -253,6 +255,7 @@ const showPersonalDashboard = async (clickEvent, fromButton, loanId = 0) => {
         }
     }
 
+    currentLoanIdFocus = loanId;
     const dashboardContainer = document.getElementById('dashboardContainer');
     const personalDashboard = document.getElementById('personalDashboard');
 
@@ -296,7 +299,7 @@ const showPersonalDashboard = async (clickEvent, fromButton, loanId = 0) => {
 
 function showDashboard() {
     const statusValue = document.getElementById(ID_PP_STATUS);
-
+    currentLoanIdFocus = -1;
     isEditing = true;
     handleStatusEdit();
     statusValue.style.display = 'block';
@@ -348,15 +351,18 @@ async function handleStatusEdit() {
         if (newStatus === '') {
             newStatus = statusCache
         }
-        editButton.textContent = 'Edit Status';
-        isEditing = false;
-        statusSelect.style.display = 'none';
-        statusValue.style.display = 'flex';
-        statusValue.textContent = newStatus;
-        await saveStatus(newStatus); // Assume saveStatus is a function to save the status
 
-        // Update status color based on selected status
-        updateStatusColor(newStatus);
+        if (await saveStatus(currentLoanIdFocus, newStatus)) {
+            editButton.textContent = 'Edit Status';
+            isEditing = false;
+            statusSelect.style.display = 'none';
+            statusValue.style.display = 'flex';
+            statusValue.textContent = newStatus;
+            updateStatusColor(newStatus);
+        } else {
+            alert("Failed to update, please try again.");
+        }
+
 
     } else {
         // Enter edit mode
@@ -444,10 +450,11 @@ const saveStatus = async (loanId, newStatus) => {
                 loan_status: newStatus
             })
         };
-        await apiFetchWithAuth(apiUrl, options)
+        await apiFetchWithAuth(apiUrl, options);
+        return true;
     } catch (error) {
         console.error('Error fetching loan records:', error);
-        return []; // Return an empty array or handle the error as needed
+        return false;
     }
 }
 
