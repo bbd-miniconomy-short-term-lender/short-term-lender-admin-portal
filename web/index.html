@@ -52,7 +52,7 @@
               <tr>
                 <th>Loan ID</th>
                 <th>Persona ID</th>
-                <th>Loan Amount (R)</th>
+                <th>Loan Amount (B)</th>
                 <th>Status</th>
               </tr>
             </thead>
@@ -92,23 +92,23 @@
             <p class="info-value" id="personaIDValue">Loading...</p>
           </div>
           <div class="info-card">
-            <p class="info-title">Loan Amount (R)</p>
+            <p class="info-title">Loan Amount (B)</p>
             <p class="info-value" id="loanAmount">Loading...</p>
           </div>
           <div class="info-card">
-            <p class="info-title">Payment Total to Date (R)</p>
+            <p class="info-title">Payment Total to Date (B)</p>
             <p class="info-value" id="payTotIDValue">Loading...</p>
           </div>
           <div class="info-card">
-            <p class="info-title">Interest Incurred (R)</p>
+            <p class="info-title">Interest Incurred (B)</p>
             <p class="info-value" id="interestAmtValue">Loading...</p>
           </div>
           <div class="info-card">
-            <p class="info-title">Outstanding Amount (R)</p>
+            <p class="info-title">Outstanding Amount (B)</p>
             <p class="info-value" id="outstnadingAmtValue">Loading...</p>
           </div>
           <div class="info-card">
-            <p class="info-title">Term (years)</p>
+            <p class="info-title">Term (months)</p>
             <p class="info-value" id="loanTerm">Loading...</p>
           </div>
           <div class="info-card">
@@ -120,9 +120,21 @@
                 <option value="Complete">Complete</option>
                 <option value="Cancelled">Cancelled</option>
             </select>
-          </div>
-        
+          </div> 
         </section>
+        <div id="dashTable">
+          <table id="paymentHistory">
+            <thead>
+              <tr>
+                <th>Payment ID</th>
+                <th>Payment Date</th>
+                <th>Payment Amount (B)</th>
+                <th>Remaining Balance (B)</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
       </section>
     </main>
   </body>

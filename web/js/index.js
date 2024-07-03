@@ -1,6 +1,6 @@
 import { validateSession, clearSessionAndLogout, getUsername } from './auth.js';
 import { apiFetchWithAuth } from './api.js';
-
+import { API_URL } from './config.js';
 
 // ========================================================
 //                       CONSTANTS
@@ -10,14 +10,16 @@ const ID_LOGOUT_BUTTON = 'logoutButtonHeader';
 const ID_REPAYMENT_DIAL = 'repaymentDial';
 const ID_INTEREST_RATE_METRIC = 'interestRateMetric';
 const ID_LOAN_TABLE = 'loanTableBody';
+const PAYMENT_HISTORY = 'paymentHistory'
 const NAVIGATION_BACK_BUTTON = 'backButton'
 const EDIT_BUTTON = 'EditButton'
 const ID_LOGO_HEADER = 'logoHeader';
-
 const ID_ID_INPUT = 'idInput';
 const ID_ID_INPUT_BUTTON = 'loadInfoButton';
 const ID_HEADER_USERNAME = 'userNameHeader';
 
+// Define the base URL for your API
+const BASE_URL = 'http://localhost:5000';
 const ID_PP_PERSONAID = 'personaIDValue';
 const ID_PP_PAYTOT = 'payTotIDValue';
 const ID_PP_OUTSTANDING = 'outstnadingAmtValue';
@@ -77,28 +79,7 @@ const initIndex = () => {
     updateDialPercent(ID_REPAYMENT_DIAL, 0);
     updateSimpleMetric(ID_INTEREST_RATE_METRIC, 0);
 
-    // const loanRecords = await apiFetchWithAuth('/loans/info');
-    const loanRecords = [
-        {
-            loanId: 1,
-            personaId: '1',
-            loanAmount: '100',
-            status: 'Active',
-        },
-        {
-            loanId: 2,
-            personaId: '2',
-            loanAmount: '200',
-            status: 'Paid Off',
-        },
-        {
-            loanId: 3,
-            personaId: '3',
-            loanAmount: '300',
-            status: 'Active',
-        },
-    ];
-    populateLoanTable(loanRecords);
+    populateLoanTable();
 
     // -===============================-
 
@@ -115,37 +96,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-// Wait for the document to load
-document.addEventListener("DOMContentLoaded", function() {
-    // Get the element that displays the status
-    var statusElement = document.getElementById("statusValue");
-
-    // Initial status text
-    var statusText = "Loading...";
-
-    // Function to update the status text and its color
-    function updateStatus(status) {
-        statusElement.textContent = status; // Update the text content
-
-        // Update the color based on the status
-        if (status === "Active") {
-            statusElement.style.color = "orange";
-        } else if (status === "Complete") {
-            statusElement.style.color = "green";
-        } else if (status === "Cancelled") {
-            statusElement.style.color = "red";
-        } else {
-            statusElement.style.color = "black"; // Default color
-        }
-    }
-
-    // Example of updating the status (replace this with your actual dynamic update logic)
-    // For example, after fetching data or based on user interaction
-    // Assuming you have a way to retrieve or set the status, update it like this:
-    updateStatus("Active"); // Replace "Active" with your actual status value
-});
-
-
 
 // ========================================================
 
@@ -158,35 +108,109 @@ document.addEventListener("DOMContentLoaded", function() {
  * the rows of the dashboard table.
  * @param {Object} records 
  */
-const populateLoanTable = (records) => {
+const populateLoanTable = async () => {
     const tableBody = document.getElementById(ID_LOAN_TABLE);
-    records.forEach((record) => {
-        const newRow = document.createElement('tr');
-        const { loanId, personaId, loanAmount, status } = record;
 
-        // Create loanId cell
-        const loanIdCell = document.createElement('td');
-        loanIdCell.textContent = loanId;
-        newRow.appendChild(loanIdCell);
+    try {
+        const records = await fetchLoanRecords(); // Wait for the promise to resolve
 
-        // Create personaId cell
-        const personaIdCell = document.createElement('td');
-        personaIdCell.textContent = personaId;
-        newRow.appendChild(personaIdCell);
+        // Ensure records is an array before iterating
+        if (!Array.isArray(records)) {
+            console.error('Expected an array of loan records, got:', typeof records);
+            return;
+        }
 
-        // Create loanAmount cell
-        const loanAmountCell = document.createElement('td');
-        loanAmountCell.textContent = loanAmount;
-        newRow.appendChild(loanAmountCell);
+        records.forEach((record) => {
+            const newRow = document.createElement('tr');
+            const { loan_id, persona_id, amount, loan_status } = record;
 
-        // Create status cell
-        const statusCell = document.createElement('td');
-        statusCell.textContent = status;
-        newRow.appendChild(statusCell);
+            // Create loanId cell
+            const loanIdCell = document.createElement('td');
+            loanIdCell.textContent = loan_id;
+            newRow.appendChild(loanIdCell);
 
-        tableBody.appendChild(newRow);
-    });
-}
+            // Create personaId cell
+            const personaIdCell = document.createElement('td');
+            personaIdCell.textContent = persona_id;
+            newRow.appendChild(personaIdCell);
+
+            // Create loanAmount cell
+            const loanAmountCell = document.createElement('td');
+            loanAmountCell.textContent = amount;
+            newRow.appendChild(loanAmountCell);
+
+            // Create status cell
+            const statusCell = document.createElement('td');
+            statusCell.textContent = loan_status;
+            newRow.appendChild(statusCell);
+
+            tableBody.appendChild(newRow);
+        });
+    } catch (error) {
+        console.error('Error populating loan table:', error);
+        // Handle error as needed, e.g., display error message on UI
+    }
+};
+
+const  paymentHistory = async (loanId) => {
+    const tableBody = document.getElementById(PAYMENT_HISTORY);
+
+    try {
+        const records = await paymentData(loanId); // Wait for the promise to resolve
+        console.log(records)
+        const data = await fetchData(loanId)
+        let loanAmount = data.monthly_repayment * data.term_months
+
+        // Ensure records is an array before iterating
+        if (!Array.isArray(records)) {
+            console.error('Expected an array of loan records, got:', typeof records);
+            return;
+        }
+
+        for (let i = 0; i < records.length; i++) {
+            const record = records[i];
+            const newRow = document.createElement('tr');
+            const { repayment_id, loan_id, repayment_date, persona_id } = record;
+        
+            // Create loanId cell
+            const loanIdCell = document.createElement('td');
+            loanIdCell.textContent = repayment_id;
+            newRow.appendChild(loanIdCell);
+        
+            // Create repayment date cell
+            const repaymentDateCell = document.createElement('td');
+            repaymentDateCell.textContent = repayment_date;
+            newRow.appendChild(repaymentDateCell);
+        
+            // Create monthly repayment cell
+            const monthlyRepaymentCell = document.createElement('td');
+            monthlyRepaymentCell.textContent = data.monthly_repayment;
+            newRow.appendChild(monthlyRepaymentCell);
+        
+            loanAmount = parseFloat((loanAmount - data.monthly_repayment).toFixed(2));
+        
+            // Create remaining balance cell
+            const remainingBalanceCell = document.createElement('td');
+            remainingBalanceCell.textContent = loanAmount;
+            newRow.appendChild(remainingBalanceCell);
+        
+            tableBody.appendChild(newRow);
+        }
+        
+    } catch (error) {
+        console.error('Error populating loan table:', error);
+        // Handle error as needed, e.g., display error message on UI
+    }
+};
+
+const clearPaymentHistory = () => {
+    const tableBody = document.getElementById(PAYMENT_HISTORY);
+
+    // Remove all rows except the first (header) row
+    while (tableBody.rows.length > 1) {
+        tableBody.deleteRow(1); // Start deleting from index 1 (after header)
+    }
+};
 
 
 // ========================================================
@@ -216,7 +240,7 @@ const updateSimpleMetric = (metricId, newValue) => {
     metric.setAttribute("data-percent", newValue);
 }
 
-const showPersonalDashboard = (clickEvent, fromButton, loanId = 0) => {
+const showPersonalDashboard = async(clickEvent, fromButton, loanId = 0) => {
     if (!fromButton) {
         let target = clickEvent.target;
         if (target.nodeName == 'TH' || target.parentElement.nodeName == 'THEAD') {
@@ -243,62 +267,35 @@ const showPersonalDashboard = (clickEvent, fromButton, loanId = 0) => {
     document.getElementById(ID_PP_HEADING).textContent = `Loan ${loanId} Breakdown`;
     // Fetch data based on clientId (replace this with your actual data fetching logic)
     console.log("Fetching data for loan:", loanId);
-    fetchData(loanId)
-        .then(data => {
+    let data = await fetchData(loanId)
+        
             // Update interest rate metric
-            const interestRateMetric = document.querySelector('#personalDashboard .interest-rate-metric');
-            interestRateMetric.setAttribute('data-percent', data.interestRate);
-            interestRateMetric.querySelector('.pannelDescription').textContent = `Current Interest Rate`;
+    const interestRateMetric = document.querySelector('#personalDashboard .interest-rate-metric');
+    interestRateMetric.setAttribute('data-percent', parseFloat(data.interest_rate)*100);
+    interestRateMetric.querySelector('.pannelDescription').textContent = `Current Interest Rate`;
 
-            const monthlyRepayments = document.querySelector('#personalDashboard .monthly-repayments');
-            monthlyRepayments.setAttribute('data-percent', `${data.monthlyRepayment}`);
-            monthlyRepayments.querySelector('.pannelDescription').textContent = `Monthly Repayment (Rands)`;
+    const monthlyRepayments = document.querySelector('#personalDashboard .monthly-repayments');
+    monthlyRepayments.setAttribute('data-percent', `${data.monthly_repayment}`);
+    monthlyRepayments.querySelector('.pannelDescription').textContent = `Monthly Repayment (Rands)`;
 
             // Update radial dial
-            const dialPersonal = document.getElementById('dial-personal');
-            dialPersonal.setAttribute('data-percent', data.repaymentProgressPercent);
-            dialPersonal.style.setProperty('--percent', data.repaymentProgressPercent + '%');
+    const dialPersonal = document.getElementById('dial-personal');
+    dialPersonal.setAttribute('data-percent', data.repaymentProgressPercent);
+    dialPersonal.style.setProperty('--percent', data.repaymentProgressPercent + '%');
 
-            document.getElementById(ID_PP_PERSONAID).textContent = loanId;
-            document.getElementById(ID_PP_PAYTOT).textContent = data.paidAmount;
-            document.getElementById(ID_PP_OUTSTANDING).textContent = data.loanAmount + data.interestAdded - data.paidAmount;
-            document.getElementById(ID_PP_STATUS).textContent = data.status;
-            document.getElementById(ID_PP_LOAN_AMOUNT).textContent = data.loanAmount;
-            document.getElementById(ID_PP_LOAN_TERM).textContent = data.loanTerm;
-            document.getElementById(ID_PP_LOAN_INTEREST).textContent = data.interestAdded;
+    document.getElementById(ID_PP_PERSONAID).textContent = loanId;
+    document.getElementById(ID_PP_PAYTOT).textContent = data.total_paid_amount;
+    document.getElementById(ID_PP_OUTSTANDING).textContent = parseFloat(((data.monthly_repayment*data.term_months) - data.total_paid_amount).toFixed(2));
+    document.getElementById(ID_PP_STATUS).textContent = data.loan_status;
+    updateStatusColor(data.loan_status)
+    document.getElementById(ID_PP_LOAN_AMOUNT).textContent = data.amount;
+    document.getElementById(ID_PP_LOAN_TERM).textContent = data.term_months;
+    document.getElementById(ID_PP_LOAN_INTEREST).textContent = parseFloat((data.monthly_repayment - data.amount/data.term_months).toFixed(2));
 
-        })
-        .catch(error => {
-            console.error('Error fetching data:', error);
-        });
+    paymentHistory(loanId);
+
 }
 
-// Example function to fetch data (replace with your actual data fetching mechanism)
-const fetchData = (loanId) => {
-    // Simulating fetching data from API or elsewhere
-    return new Promise((resolve, reject) => {
-        // Replace with actual API call or data retrieval logic
-        setTimeout(() => {
-            // Example data (replace with actual fetched data structure)
-            const data = {
-                interestRate: 12,
-                loanAmount: 10000,
-                paidAmount: 2500,
-                loanTerm: 10,
-                monthlyRepayment: 9500,
-                status: 'Active',
-                interestAdded: 3250
-                // Add more fields as needed
-            };
-
-            // Calculate repayment progress percentage
-            const repaymentProgressPercent = (data.paidAmount / data.loanAmount) * 100;
-            data.repaymentProgressPercent = parseFloat(repaymentProgressPercent.toFixed(2));
-
-            resolve(data);
-        }, 500); // Simulating delay for fetching data
-    });
-}
 
 function showDashboard() {
     const statusValue = document.getElementById(ID_PP_STATUS);
@@ -317,6 +314,7 @@ function showDashboard() {
     personalDashboard.style.display = 'none';
 
     clearPersonalMetrics();
+    clearPaymentHistory();
 }
 
 function clearPersonalMetrics() {
@@ -356,7 +354,7 @@ async function handleStatusEdit() {
         editButton.textContent = 'Edit Status';
         isEditing = false;
         statusSelect.style.display = 'none';
-        statusValue.style.display = 'block';
+        statusValue.style.display = 'flex';
         statusValue.textContent = newStatus;
         await saveStatus(newStatus); // Assume saveStatus is a function to save the status
         
@@ -388,38 +386,6 @@ function updateStatusColor(status) {
     }
 }
 
-// Function to save status (mock async function)
-async function saveStatus(newStatus) {
-    // Mock async operation (replace with actual save logic)
-    console.log('Saving status:', newStatus);
-}
-
-
-async function postStatusUpdate(loanId, newStatus) {
-    const options = {
-        method: 'POST',
-        body: {
-            loanId: loanId,
-            newStatus: newStatus
-        }
-    }
-    // await apiFetchWithAuth('loans/status', options);
-    console.log(`Updating loan ${loanId} status with: ${newStatus}.`);
-}
-
-function sanitizeInput(input) {
-    let sanitizedInput = input.slice(0, 10);
-
-    sanitizedInput = sanitizedInput.replace(/[^a-zA-Z0-9 ]/g, '');
-
-    const lowerInput = input.toLowerCase();
-    if (lowerInput.includes('drop')) {
-        sanitizedInput = "I'll drop your table";
-    }
-
-    return sanitizedInput;
-}
-
 function handleLoadClick() {
     const loanId = document.getElementById(ID_ID_INPUT).value ?? -1;
 
@@ -429,3 +395,59 @@ function handleLoadClick() {
 }
 
 // ========================================================
+
+const paymentData = async(loanId) => {
+    try {
+        const url = `fe/repayments/${loanId}`;
+        const response = await apiFetchWithAuth(url)
+        return await response.json(); // Assuming response.data is an array of loan records
+    } catch (error) {
+        console.error('Error fetching loan records:', error);
+        return []; // Return an empty array or handle the error as needed
+    }
+}
+
+
+const fetchData = async(loanId) => {
+    try {
+        const apiUrl = `fe/loan/info/${loanId}`;
+        const response = await apiFetchWithAuth(apiUrl)
+        const data = await response.json()
+        const repaymentProgressPercent = (data.total_paid_amount / (data.monthly_repayment*data.term_months)) * 100;
+        data.repaymentProgressPercent = parseFloat(repaymentProgressPercent.toFixed(2));
+        console.log(data)
+        return data
+    } catch (error) {
+        console.error('Error fetching loan records:', error);
+        return []; // Return an empty array or handle the error as needed
+    }
+};
+
+const fetchLoanRecords = async () => {
+    try {
+        const url = 'fe/loan/table';
+        const response = await apiFetchWithAuth(url)
+        return await response.json(); // Assuming response.data is an array of loan records
+    } catch (error) {
+        console.error('Error fetching loan records:', error);
+        return []; // Return an empty array or handle the error as needed
+    }
+};
+// Function to save status
+const saveStatus = async(loanId, newStatus) => {
+    try{
+        const apiUrl = 'fe/loan/status'
+        const options = {
+            method: 'POST', 
+            body: {
+                loan_id: loanId,
+                loan_status: newStatus
+            }
+        }
+        await apiFetchWithAuth(apiUrl, options)
+    } catch (error) {
+        console.error('Error fetching loan records:', error);
+        return []; // Return an empty array or handle the error as needed
+    }
+}
+
