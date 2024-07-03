@@ -81,7 +81,6 @@ const initIndex = () => {
     populateLoanTable();
 
     // -===============================-
-
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -94,7 +93,6 @@ document.addEventListener('DOMContentLoaded', () => {
         personalDashboardSection.style.display = "none";
     }
 });
-
 
 // ========================================================
 
@@ -255,6 +253,13 @@ const showPersonalDashboard = async (clickEvent, fromButton, loanId = 0) => {
         }
     }
 
+    let data = await fetchData(loanId);
+    if (data.length <= 0) {
+        console.error('Fetch failed for this loan.');
+        alert("Invalid loan ID.");
+        return;
+    }
+
     currentLoanIdFocus = loanId;
     const dashboardContainer = document.getElementById('dashboardContainer');
     const personalDashboard = document.getElementById('personalDashboard');
@@ -267,7 +272,6 @@ const showPersonalDashboard = async (clickEvent, fromButton, loanId = 0) => {
     document.getElementById(ID_PP_HEADING).textContent = `Loan ${loanId} Breakdown`;
     // Fetch data based on clientId (replace this with your actual data fetching logic)
     console.log("Fetching data for loan:", loanId);
-    let data = await fetchData(loanId)
 
     // Update interest rate metric
     const interestRateMetric = document.querySelector('#personalDashboard .interest-rate-metric');
