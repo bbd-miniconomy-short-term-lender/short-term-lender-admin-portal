@@ -276,7 +276,7 @@ const showPersonalDashboard = async (clickEvent, fromButton, loanId = 0) => {
 
     const monthlyRepayments = document.querySelector('#personalDashboard .monthly-repayments');
     monthlyRepayments.setAttribute('data-percent', `${data.monthly_repayment}`);
-    monthlyRepayments.querySelector('.pannelDescription').textContent = `Monthly Repayment (Rands)`;
+    monthlyRepayments.querySelector('.pannelDescription').textContent = `Monthly Repayment (B)`;
 
     // Update radial dial
     const dialPersonal = document.getElementById('dial-personal');
@@ -300,9 +300,14 @@ const showPersonalDashboard = async (clickEvent, fromButton, loanId = 0) => {
 function showDashboard() {
     const statusValue = document.getElementById(ID_PP_STATUS);
     currentLoanIdFocus = -1;
-    isEditing = true;
-    handleStatusEdit();
-    statusValue.style.display = 'block';
+
+    const editButton = document.getElementById(EDIT_BUTTON);
+    const statusSelect = document.getElementById(STATUS_SELECT);
+
+    editButton.textContent = 'Edit Status';
+    isEditing = false;
+    statusSelect.style.display = 'none';
+    statusValue.style.display = 'flex';
 
     const dashboardContainer = document.getElementById('dashboardContainer');
     const personalDashboard = document.getElementById('personalDashboard');
@@ -325,7 +330,7 @@ function clearPersonalMetrics() {
 
     const monthlyRepayments = document.querySelector('#personalDashboard .monthly-repayments');
     monthlyRepayments.setAttribute('data-percent', loadingText);
-    monthlyRepayments.querySelector('.pannelDescription').textContent = `Monthly Repayment (Rands)`;
+    monthlyRepayments.querySelector('.pannelDescription').textContent = `Monthly Repayment (B)`;
 
     const dialPersonal = document.getElementById('dial-personal');
     dialPersonal.setAttribute('data-percent', 0);
@@ -340,7 +345,7 @@ function clearPersonalMetrics() {
     document.getElementById(ID_PP_LOAN_INTEREST).textContent = loadingText;
 }
 
-async function handleStatusEdit() {
+async function handleStatusEdit(fromCode = false) {
     const editButton = document.getElementById(EDIT_BUTTON);
     const statusValue = document.getElementById(STATUS_VALUE);
     const statusSelect = document.getElementById(STATUS_SELECT);
