@@ -1,6 +1,5 @@
 import { validateSession, clearSessionAndLogout, getUsername } from './auth.js';
 import { apiFetchWithAuth } from './api.js';
-import { API_URL } from './config.js';
 
 // ========================================================
 //                       CONSTANTS
@@ -18,8 +17,6 @@ const ID_ID_INPUT = 'idInput';
 const ID_ID_INPUT_BUTTON = 'loadInfoButton';
 const ID_HEADER_USERNAME = 'userNameHeader';
 
-// Define the base URL for your API
-const BASE_URL = 'http://localhost:5000';
 const ID_PP_PERSONAID = 'personaIDValue';
 const ID_PP_PAYTOT = 'payTotIDValue';
 const ID_PP_OUTSTANDING = 'outstnadingAmtValue';
@@ -152,7 +149,7 @@ const populateLoanTable = async () => {
     }
 };
 
-const  paymentHistory = async (loanId) => {
+const paymentHistory = async (loanId) => {
     const tableBody = document.getElementById(PAYMENT_HISTORY);
 
     try {
@@ -171,32 +168,32 @@ const  paymentHistory = async (loanId) => {
             const record = records[i];
             const newRow = document.createElement('tr');
             const { repayment_id, loan_id, repayment_date, persona_id } = record;
-        
+
             // Create loanId cell
             const loanIdCell = document.createElement('td');
             loanIdCell.textContent = repayment_id;
             newRow.appendChild(loanIdCell);
-        
+
             // Create repayment date cell
             const repaymentDateCell = document.createElement('td');
             repaymentDateCell.textContent = repayment_date;
             newRow.appendChild(repaymentDateCell);
-        
+
             // Create monthly repayment cell
             const monthlyRepaymentCell = document.createElement('td');
             monthlyRepaymentCell.textContent = data.monthly_repayment;
             newRow.appendChild(monthlyRepaymentCell);
-        
+
             loanAmount = parseFloat((loanAmount - data.monthly_repayment).toFixed(2));
-        
+
             // Create remaining balance cell
             const remainingBalanceCell = document.createElement('td');
             remainingBalanceCell.textContent = loanAmount;
             newRow.appendChild(remainingBalanceCell);
-        
+
             tableBody.appendChild(newRow);
         }
-        
+
     } catch (error) {
         console.error('Error populating loan table:', error);
         // Handle error as needed, e.g., display error message on UI
@@ -240,7 +237,7 @@ const updateSimpleMetric = (metricId, newValue) => {
     metric.setAttribute("data-percent", newValue);
 }
 
-const showPersonalDashboard = async(clickEvent, fromButton, loanId = 0) => {
+const showPersonalDashboard = async (clickEvent, fromButton, loanId = 0) => {
     if (!fromButton) {
         let target = clickEvent.target;
         if (target.nodeName == 'TH' || target.parentElement.nodeName == 'THEAD') {
@@ -268,29 +265,29 @@ const showPersonalDashboard = async(clickEvent, fromButton, loanId = 0) => {
     // Fetch data based on clientId (replace this with your actual data fetching logic)
     console.log("Fetching data for loan:", loanId);
     let data = await fetchData(loanId)
-        
-            // Update interest rate metric
+
+    // Update interest rate metric
     const interestRateMetric = document.querySelector('#personalDashboard .interest-rate-metric');
-    interestRateMetric.setAttribute('data-percent', parseFloat(data.interest_rate)*100);
+    interestRateMetric.setAttribute('data-percent', parseFloat(data.interest_rate) * 100);
     interestRateMetric.querySelector('.pannelDescription').textContent = `Current Interest Rate`;
 
     const monthlyRepayments = document.querySelector('#personalDashboard .monthly-repayments');
     monthlyRepayments.setAttribute('data-percent', `${data.monthly_repayment}`);
     monthlyRepayments.querySelector('.pannelDescription').textContent = `Monthly Repayment (Rands)`;
 
-            // Update radial dial
+    // Update radial dial
     const dialPersonal = document.getElementById('dial-personal');
     dialPersonal.setAttribute('data-percent', data.repaymentProgressPercent);
     dialPersonal.style.setProperty('--percent', data.repaymentProgressPercent + '%');
 
     document.getElementById(ID_PP_PERSONAID).textContent = loanId;
     document.getElementById(ID_PP_PAYTOT).textContent = data.total_paid_amount;
-    document.getElementById(ID_PP_OUTSTANDING).textContent = parseFloat(((data.monthly_repayment*data.term_months) - data.total_paid_amount).toFixed(2));
+    document.getElementById(ID_PP_OUTSTANDING).textContent = parseFloat(((data.monthly_repayment * data.term_months) - data.total_paid_amount).toFixed(2));
     document.getElementById(ID_PP_STATUS).textContent = data.loan_status;
     updateStatusColor(data.loan_status)
     document.getElementById(ID_PP_LOAN_AMOUNT).textContent = data.amount;
     document.getElementById(ID_PP_LOAN_TERM).textContent = data.term_months;
-    document.getElementById(ID_PP_LOAN_INTEREST).textContent = parseFloat((data.monthly_repayment - data.amount/data.term_months).toFixed(2));
+    document.getElementById(ID_PP_LOAN_INTEREST).textContent = parseFloat((data.monthly_repayment - data.amount / data.term_months).toFixed(2));
 
     paymentHistory(loanId);
 
@@ -348,7 +345,7 @@ async function handleStatusEdit() {
     if (isEditing) {
         // Save changes
         let newStatus = statusSelect.value;
-        if(newStatus === '') {
+        if (newStatus === '') {
             newStatus = statusCache
         }
         editButton.textContent = 'Edit Status';
@@ -357,7 +354,7 @@ async function handleStatusEdit() {
         statusValue.style.display = 'flex';
         statusValue.textContent = newStatus;
         await saveStatus(newStatus); // Assume saveStatus is a function to save the status
-        
+
         // Update status color based on selected status
         updateStatusColor(newStatus);
 
@@ -396,7 +393,7 @@ function handleLoadClick() {
 
 // ========================================================
 
-const paymentData = async(loanId) => {
+const paymentData = async (loanId) => {
     try {
         const url = `fe/repayments/${loanId}`;
         const response = await apiFetchWithAuth(url)
@@ -408,12 +405,12 @@ const paymentData = async(loanId) => {
 }
 
 
-const fetchData = async(loanId) => {
+const fetchData = async (loanId) => {
     try {
         const apiUrl = `fe/loan/info/${loanId}`;
         const response = await apiFetchWithAuth(apiUrl)
         const data = await response.json()
-        const repaymentProgressPercent = (data.total_paid_amount / (data.monthly_repayment*data.term_months)) * 100;
+        const repaymentProgressPercent = (data.total_paid_amount / (data.monthly_repayment * data.term_months)) * 100;
         data.repaymentProgressPercent = parseFloat(repaymentProgressPercent.toFixed(2));
         console.log(data)
         return data
@@ -434,11 +431,11 @@ const fetchLoanRecords = async () => {
     }
 };
 // Function to save status
-const saveStatus = async(loanId, newStatus) => {
-    try{
+const saveStatus = async (loanId, newStatus) => {
+    try {
         const apiUrl = 'fe/loan/status'
         const options = {
-            method: 'POST', 
+            method: 'POST',
             body: {
                 loan_id: loanId,
                 loan_status: newStatus
