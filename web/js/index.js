@@ -436,11 +436,14 @@ const saveStatus = async (loanId, newStatus) => {
         const apiUrl = 'fe/loan/status'
         const options = {
             method: 'POST',
-            body: {
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
                 loan_id: loanId,
                 loan_status: newStatus
-            }
-        }
+            })
+        };
         await apiFetchWithAuth(apiUrl, options)
     } catch (error) {
         console.error('Error fetching loan records:', error);

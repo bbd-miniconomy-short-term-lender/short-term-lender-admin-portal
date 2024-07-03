@@ -20,6 +20,8 @@ const apiFetchWithAuth = async (endpoint, options = {}) => {
         clearSessionAndLogout();
     } else if (result.status == 200) {
         return result;
+    } else if (result.status == 404) {
+        return NaN;
     }
 }
 
