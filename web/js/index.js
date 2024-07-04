@@ -52,7 +52,7 @@ let currentStatus = '';
  * Called once when the page is loaded
  * to initialize the index / home page.
  */
-const initIndex = () => {
+const initIndex = async () => {
     if (!validateSession()) {
         clearSessionAndLogout();
     }
@@ -75,8 +75,9 @@ const initIndex = () => {
     // -==      Init Data View       ==-
 
     // TODO : get data for metrics
-    updateDialPercent(ID_REPAYMENT_DIAL, 0);
-    updateSimpleMetric(ID_INTEREST_RATE_METRIC, 0);
+    const intRate = await(await apiFetchWithAuth('/fe/lending-rate')).text ?? 10;
+    updateDialPercent(ID_REPAYMENT_DIAL, 43.6);
+    updateSimpleMetric(ID_INTEREST_RATE_METRIC, intRate);
 
     populateLoanTable();
 
