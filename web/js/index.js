@@ -75,7 +75,7 @@ const initIndex = async () => {
     // -==      Init Data View       ==-
 
     // TODO : get data for metrics
-    const intRate = await(await apiFetchWithAuth('/fe/lending-rate')).text ?? 10;
+    const intRate = await(await apiFetchWithAuth('/fe/lending-rate')).json().lending ?? 10;
     updateDialPercent(ID_REPAYMENT_DIAL, 43.6);
     updateSimpleMetric(ID_INTEREST_RATE_METRIC, intRate);
 
