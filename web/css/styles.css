@@ -402,3 +402,25 @@ tr:nth-child(even) {
   border-color: var(--header-background-clr-lt); /* Example focus color */
 }
 
+#toast {
+  visibility: hidden;
+  min-width: 250px;
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  border-radius: 5px;
+  padding: 16px;
+  position: fixed;
+  z-index: 1;
+  left: 50%;
+  bottom: 30px;
+  transform: translateX(-50%);
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  transition: visibility 0s, opacity 0.5s linear;
+  opacity: 0;
+}
+
+#toast.show {
+  visibility: visible;
+  opacity: 1;
+}
