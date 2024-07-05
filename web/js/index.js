@@ -257,7 +257,7 @@ const showPersonalDashboard = async (clickEvent, fromButton, loanId = 0) => {
     let data = await fetchData(loanId);
     if (data.length <= 0) {
         console.error('Fetch failed for this loan.');
-        alert("Invalid loan ID.");
+        showToast("Invalid loan ID.");
         return;
     }
 
@@ -468,3 +468,14 @@ const saveStatus = async (loanId, newStatus) => {
     }
 }
 
+function showToast(message) {
+    const toast = document.getElementById('toast');
+    toast.textContent = message;
+    toast.className = 'show';
+    
+    setTimeout(() => {
+      toast.className = toast.className.replace('show', '');
+    }, 3000); // Show toast for 3 seconds
+  }
+
+  
